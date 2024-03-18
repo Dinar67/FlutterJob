@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "910757145226",
+    "project_id": "flutterjob-842eb",
+    "storage_bucket": "flutterjob-842eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910757145226:android:0dd78867558902e698db73",
+        "android_client_info": {
+          "package_name": "com.example.flutter_job"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY7Wmp8fgGtov_5yxrKhCxCl1axiF0jRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910757145226:android:1eb84425e315290798db73",
+        "android_client_info": {
+          "package_name": "com.example.flutter_jobDinar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY7Wmp8fgGtov_5yxrKhCxCl1axiF0jRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
