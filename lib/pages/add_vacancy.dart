@@ -1,90 +1,30 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_job/database/firebaseFirestore/resume_collection.dart';
+import 'package:flutter_job/database/firebaseFirestore/vacancy_collection.dart';
 import 'package:flutter_job/pages/bottom/profile.dart';
 import 'package:toast/toast.dart';
 
-class AddResumesPage extends StatefulWidget {
-  const AddResumesPage({super.key});
-
+class AddVacancyPage extends StatefulWidget {
+  const AddVacancyPage({super.key});
   @override
-  State<AddResumesPage> createState() => _AddResumesPageState();
+  State<AddVacancyPage> createState() => _AddVacancyPageState();
 }
 
-class _AddResumesPageState extends State<AddResumesPage> {
+class _AddVacancyPageState extends State<AddVacancyPage> {
   TextEditingController positionController = TextEditingController();
   TextEditingController sallaryController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  final String userId = FirebaseAuth.instance.currentUser!.uid.toString();
-  dynamic userDoc;
-  ResumeCollection resumeCollection = ResumeCollection();
-  dynamic resumeDoc;
+  TextEditingController grafficController = TextEditingController();
+  TextEditingController nameCompanyController = TextEditingController();
+  VacancyCollection resumeCollection = VacancyCollection();
 
-  getUserById() async {
-    final DocumentSnapshot documentSnapshot = await colRef.doc(userId).get();
-    setState(() {
-      userDoc = documentSnapshot;
-    });
-  }
-
-  @override
-  void initState() {
-    
-    getUserById();
-    super.initState();
-  }
-
+  dynamic vacancyDoc;
+  
   @override
   Widget build(BuildContext context) {
-
-    resumeDoc = ModalRoute.of(context)?.settings.arguments as dynamic;
-    if(resumeDoc != null){
-      positionController.text = resumeDoc['position'];
-      sallaryController.text = resumeDoc['sallary'];
-      descriptionController.text = resumeDoc['description'];
-    }
-    
     ToastContext().init(context);
-
-
-    Future<void> addResumes() async {
-                  if (sallaryController.text.isEmpty ||
-                      descriptionController.text.isEmpty ||
-                      positionController.text.isEmpty) {
-                    Toast.show('Заполните поля');
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                    await resumeCollection.addResumeProfile(
-                        positionController.text,
-                        sallaryController.text,
-                        descriptionController.text,
-                        userDoc);
-                        Navigator.pop(context);
-                        Toast.show('Добавлено успешно');
-                        Navigator.popAndPushNamed(context, '/home');
-                  }
-    }
-    Future<void> editResumes() async {
-      showDialog(
-        context: context,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ));
-      await resumeCollection.editResumeProfile(positionController.text,
-       sallaryController.text,
-      descriptionController.text,
-       resumeDoc);
-       Navigator.pop(context);
-       Toast.show('Изменено успешно');
-       Navigator.popAndPushNamed(context, '/home');
-       return;
-    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -95,7 +35,7 @@ class _AddResumesPageState extends State<AddResumesPage> {
           ),
         ),
         title: const Text(
-          'Добавление/Изменение резюме',
+          'Добавление/Изменение вакансий',
           textScaler: TextScaler.linear(1.2),
         ),
       ),
@@ -184,17 +124,81 @@ class _AddResumesPageState extends State<AddResumesPage> {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(color: Colors.white),
                   ),
-                  labelText: 'Обо мне:',
+                  labelText: 'Описание:',
                   labelStyle: const TextStyle(
                     color: Colors.white38,
                   ),
-                  hintText: 'Обо мне:',
+                  hintText: 'Описание:',
                   hintStyle: const TextStyle(color: Colors.white38),
                 ),
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextField(
+                controller: grafficController,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(
+                    Icons.email,
+                    color: Colors.white70,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
+                  labelText: 'График работы:',
+                  labelStyle: const TextStyle(
+                    color: Colors.white38,
+                  ),
+                  hintText: 'График работы:',
+                  hintStyle: const TextStyle(color: Colors.white38),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextField(
+                controller: nameCompanyController,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(
+                    Icons.email,
+                    color: Colors.white70,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
+                  labelText: 'Название организации:',
+                  labelStyle: const TextStyle(
+                    color: Colors.white38,
+                  ),
+                  hintText: 'Название организации:',
+                  hintStyle: const TextStyle(color: Colors.white38),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
             ),
             /////Доделать добавление в Firebase
             SizedBox(
@@ -202,17 +206,28 @@ class _AddResumesPageState extends State<AddResumesPage> {
               width: MediaQuery.of(context).size.width * 0.6,
               child: ElevatedButton(
                 onPressed: () async {
-                  if(resumeDoc == null){
-                    addResumes();
+                  if(nameCompanyController.text.isEmpty || sallaryController.text.isEmpty 
+                  || positionController.text.isEmpty || descriptionController.text.isEmpty 
+                  || grafficController.text.isEmpty){
+                    Toast.show("Заполните все поля!");
                   }
                   else{
-                    editResumes();
+                    await VacancyCollection().addVacancy(positionController.text,
+                     descriptionController.text, sallaryController.text, grafficController.text, 
+                     nameCompanyController.text);
+                     Toast.show("Вакансия успешно добавлена!");
+                    Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
                   }
-
                 },
-                child: resumeDoc == null?
-                 const Text('Добавить'):
-                 const Text('Изменить'),
+                child: 
+                 const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Добавить"),
+                    SizedBox(width: 10),
+                    Icon(Icons.add)
+                  ],
+                 )
                 ),
               ),
           ],

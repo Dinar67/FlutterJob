@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_job/database/firebaseAuth/users_service.dart';
@@ -87,8 +86,10 @@ class _HomePageState extends State<HomePage> {
       ],
     );
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: index == 2
           ? FloatingActionButton(
+            
               onPressed: () =>
                   Navigator.popAndPushNamed(context, '/add_resumes'),
               child: const Icon(
@@ -96,7 +97,10 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               ),
             )
-          : null,
+          : FloatingActionButton(onPressed: () {
+            Navigator.popAndPushNamed(context, '/add_vacancy');
+          }, 
+          child: const Icon(Icons.add, color: Colors.white,),),
       appBar: search ? appBarSearch : appBar,
       body: pages.elementAt(index),
       bottomNavigationBar: BottomNavigationBar(

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_job/database/firebaseAuth/users_service.dart';
+import 'package:flutter_job/routes/routes.dart';
 import 'package:toast/toast.dart';
 
 class AuthPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _AuthPageState extends State<AuthPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/mountains.jpg'),
+              backgroundImage: const AssetImage('assets/mountains.jpg'),
               radius: MediaQuery.of(context).size.height * 0.15,
             ),
             // Image.asset(
@@ -148,6 +149,37 @@ class _AuthPageState extends State<AuthPage> {
                 style: TextStyle(color: Colors.white54),
               ),
               onTap: () => Navigator.popAndPushNamed(context, '/reg'),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: Divider(
+                  indent: MediaQuery.of(context).size.height * 0.05,
+                  endIndent: MediaQuery.of(context).size.height * 0.02,
+                  color: Colors.white
+                ),),
+                const Text('или', style: TextStyle(color: Colors.white),),
+                Expanded(child: Divider(
+                  indent: MediaQuery.of(context).size.height * 0.02,
+                  endIndent: MediaQuery.of(context).size.height * 0.05,
+                  color: Colors.white
+                ))
+              ],
+            ),
+             SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+             InkWell(
+              child: const Text(
+                'Забыли пароль',
+                style: TextStyle(color: Colors.white54),
+              ),
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(context, '/edit_password', (route) => false);
+              },
             ),
           ],
         ),

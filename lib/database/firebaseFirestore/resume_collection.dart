@@ -1,4 +1,4 @@
-import 'dart:js_interop_unsafe';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,7 +42,7 @@ class ResumeCollection {
 
   Future<void> editResumeProfile(
     String position,
-    String salary,
+    String sallary,
     String description,
     dynamic docs,
   ) async {
@@ -57,7 +57,7 @@ class ResumeCollection {
           .doc(docs.id)
           .update({
         'position': position,
-        'salary': salary,
+        'sallary': sallary,
         'description': description,
       });
     } catch (e) {

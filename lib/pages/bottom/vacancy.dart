@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class VacancyPage extends StatelessWidget {
+class VacancyPage extends StatefulWidget {
   const VacancyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<VacancyPage> createState() => _VacancyPageState();
+}
+
+class _VacancyPageState extends State<VacancyPage> {
+
+  Widget vacanciesCard(BuildContext context, dynamic docs){
     return ListView(
       children: [
         Card(
@@ -13,15 +19,15 @@ class VacancyPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Должность',
+                  Text(
+                   docs['post'],
                     style: TextStyle(color: Colors.white),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
                   ),
-                  const Text(
-                    "50000- 1000000",
+                  Text(
+                    docs['sallary'],
                     style: TextStyle(color: Colors.white),
                   ),
                   const Divider(
@@ -30,23 +36,32 @@ class VacancyPage extends StatelessWidget {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: const Text(
-                  "зщцфвьцфьwioahdhawhduiwahidhiawhduwahudhiawhdhawdhwahudhwahdawidhwaiahwdiuwahuidhiuwahdhwiahdwuidьфцзщвьцфзщаьщцфьаьфцаьцфаьзщфьаьфцаьзфцьазфцьаьфщцьащцфьзщаьфцзщьацфь",
+                child: Text(
+                  "Описание" + docs['description'],
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Text(
+                  "Грфик работы" + docs['workSchedule'],
                   style: TextStyle(color: Colors.white),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Дата публикации",
+                 Text(
+                    "тут должен быть date => " + docs['workSchedule'],
                     style: TextStyle(color: Colors.white),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.25,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                  await responsesCollection.addResponses(docs);
+                  Toast.show('Откликнулся!');},
                     child: const Text(
                       "Откликнуться",
                       style: TextStyle(color: Colors.white),
@@ -59,5 +74,24 @@ class VacancyPage extends StatelessWidget {
         ),
       ],
     );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(stream: FirebaseFirestore.instance.collection('vacancy').snapshots(),
+     builder: (context, snapshot){
+      if(!snapshot.hasData){
+        return const Center(
+          child: CircularProgressIndicator(color: Colors.white,),
+        );
+      }else{
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index){
+            return vacanciesCard(context, snapshot.data!.docs[index]);
+          });
+      }
+     });
+    
+    
   }
 }

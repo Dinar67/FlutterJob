@@ -42,4 +42,8 @@ class AuthService {
         .authStateChanges()
         .map((user) => user != null ? UserModel.fromFirebase(user) : null);
   }
+
+  Future<void> editPassword(String email) async{
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }
