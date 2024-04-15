@@ -1,25 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_job/database/firebaseFirestore/response_collection.dart';
+import 'package:toast/toast.dart';
 
 class VacancyPage extends StatefulWidget {
   const VacancyPage({super.key});
 
   @override
   State<VacancyPage> createState() => _VacancyPageState();
+  
 }
 
 class _VacancyPageState extends State<VacancyPage> {
-
+  
+  ResponseCollection responseCollection = ResponseCollection();
   Widget vacanciesCard(BuildContext context, dynamic docs){
-    return ListView(
-      children: [
-        Card(
+    ToastContext().init(context);
+        return Card(
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                
+                mainAxisAlignment: MainAxisAlignment.start,
+                
                 children: [
+                  Container(width: MediaQuery.of(context).size.width * 0.04,),
                   Text(
+                  
                    docs['post'],
                     style: TextStyle(color: Colors.white),
                   ),
@@ -37,7 +44,7 @@ class _VacancyPageState extends State<VacancyPage> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: Text(
-                  "Описание" + docs['description'],
+                  "Описание: " + docs['description'],
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -52,7 +59,7 @@ class _VacancyPageState extends State<VacancyPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                  Text(
-                    "тут должен быть date => " + docs['workSchedule'],
+                    "24.10.2005" + docs['workSchedule'],
                     style: TextStyle(color: Colors.white),
                   ),
                   SizedBox(
@@ -60,8 +67,9 @@ class _VacancyPageState extends State<VacancyPage> {
                   ),
                   OutlinedButton(
                     onPressed: () async {
-                  await responsesCollection.addResponses(docs);
-                  Toast.show('Откликнулся!');},
+                    await responseCollection.addResponses(docs);
+                    Toast.show('Откликнулся!');
+                  },
                     child: const Text(
                       "Откликнуться",
                       style: TextStyle(color: Colors.white),
@@ -71,9 +79,8 @@ class _VacancyPageState extends State<VacancyPage> {
               ),
             ],
           ),
-        ),
-      ],
-    );
+        );
+      
   }
   @override
   Widget build(BuildContext context) {

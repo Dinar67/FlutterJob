@@ -1,13 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 class ResponsesPage extends StatelessWidget {
   const ResponsesPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Card(
+  Widget responsesCard(BuildContext context, dynamic docs){
+    ToastContext().init(context);
+    return Card(
           child: Column(
             children: [
               Row(
@@ -78,8 +77,27 @@ class ResponsesPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
-    );
+        );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(stream: FirebaseFirestore.instance.collection('responses').snapshots(),
+     builder: (context, snapshot){
+      if(!snapshot.hasData){
+        return const Center(
+          child: CircularProgressIndicator(color: Colors.white,),
+        );
+      }else{
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index){
+            return responsesCard(context, snapshot.data!.docs[index]);
+          });
+      }
+     });
+    
+    
+  }
+  
 }

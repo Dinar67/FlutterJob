@@ -12,7 +12,7 @@ class ResponseCollection{
 
       await _firebaseFirestore.collection('responses').add({
         'uid':uid,
-        ''
+        
       });
     }
     catch(e){
